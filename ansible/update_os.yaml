@@ -1,3 +1,4 @@
+---
 - name: prepare for hosts
   hosts: all
   become: true
@@ -37,7 +38,7 @@
     - name: Disable swap permanently, persist reboots
       replace:
         path: /etc/fstab
-        regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$' #'^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+        regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$' #'^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$' => search swap in /etc/fstab
         replace: '#\1\2\3swap\4'
         backup: yes
 
@@ -59,3 +60,10 @@
         post_reboot_delay: 10
         reboot_timeout: 90
         test_command: 'echo Done!'
+      register: reboot_result
+
+    - name: Wait 300 seconds, Checking after 60 seconds
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 300
+      when: reboot_result is succeeded

@@ -18,7 +18,10 @@ variable "bastion_sshkey_location" {
   description = "bastion sshkey locations"
   sensitive   = true
 }
-
+variable "vm_nameserver" {
+  description = "DNS"
+  type = string
+}
 # k3s for rancher
 # k3s cluster variables
 variable "k3s_cluster_name" {

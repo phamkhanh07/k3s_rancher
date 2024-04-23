@@ -1,21 +1,38 @@
-- name: Install k3s in one host
+---
+- name: Install K3s and configure
   hosts: k3s_cluster
   become: true
-  become_user: root
-  # serial: "50%"
-  gather_facts: False
+  gather_facts: false
+
   tasks:
     - name: Get ip
       ansible.builtin.shell:
         cmd: hostname -I | awk '{print $1}'
       register: k3s_ip_address
+      
     - name: Set K3s_SERVER_IP
       ansible.builtin.set_fact:
         K3s_SERVER_IP: '{{ k3s_ip_address.stdout }}'
-    - name: install
+
+    - name: Install K3s
       ansible.builtin.shell:
-        cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--tls-san {{ K3s_SERVER_IP }}" sh -
-    - name: Copy kubeconfig from the server to local/bastions host
-      ansible.builtin.fetch:
-        src: /etc/rancher/k3s/k3s.yaml
-        dest: ~/.kube
+        cmd: "curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='--tls-san {{ K3s_SERVER_IP }}' sh -"
+        creates: /usr/local/bin/k3s
+      register: k3s_install_result
+      ignore_errors: true
+
+    - name: Handle errors during installation
+      ansible.builtin.fail:
+        msg: "Failed to install K3s: {{ k3s_install_result.stderr }}"
+      when: k3s_install_result.failed
+
+    - name: Create K3s config file
+      ansible.builtin.template:
+        src: k3s_config.yaml.j2
+        dest: /etc/rancher/k3s/config.yaml
+        owner: root
+        group: root
+        mode: "0644"
+      vars:
+        K3s_SERVER_HOST: "{{ host_ip.stdout }}"
+        cluster_domain: "k3s.homelab.local"
