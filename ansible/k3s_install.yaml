@@ -37,13 +37,15 @@
 
     - name: Enable k3s.services
       ansible.builtin.service:
-        name: k3s.services
+        name: k3s.service
         enabled: true
+        state: started
 
     - name: Restart k3s.services
       ansible.builtin.service:
-        name: k3s.services
+        name: k3s.service
         state: restarted
+        
     - name: Copy k3s.yaml to bastion host
       ansible.builtin.fetch:
         src: /etc/rancher/k3s/k3s.yaml
