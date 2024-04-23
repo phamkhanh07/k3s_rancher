@@ -14,6 +14,8 @@ vm_memory
 vm_cpu_type
 vm_vcpu
 vm_host_number
+vm_network_bridge
+vm_network_bridge_model
 vm_network_cidr
 vm_cloudinit_cdrom_storage
 vm_os_disk_size

@@ -12,7 +12,6 @@ variable "pm_api_token_secret" {
   type        = string
   sensitive   = true
 }
-
 variable "bastion_sshkey_location" {
   type        = string
   description = "bastion sshkey locations"
@@ -20,7 +19,17 @@ variable "bastion_sshkey_location" {
 }
 variable "vm_nameserver" {
   description = "DNS"
-  type = string
+  type        = string
+}
+variable "vm_network_bridge" {
+  description = "Proxmox network brigde name"
+  type        = string
+  default     = "vmbr0"
+}
+variable "vm_network_bridge_model" {
+  description = "Proxmox brigde network modle"
+  type        = string
+  default     = "virtio"
 }
 # k3s for rancher
 # k3s cluster variables
@@ -43,7 +52,6 @@ variable "k3s_vm_onboot" {
   default     = true
   description = "Boot with proxmox cluster"
 }
-
 variable "k3s_cluster_node_count" {
   description = "Number of node on k3s cluster"
   type        = number
@@ -70,7 +78,6 @@ variable "k3s_user_password" {
   type        = string
   sensitive   = true
 }
-
 variable "k3s_user_sshkey" {
   description = "VMs users sshkey"
   type        = string

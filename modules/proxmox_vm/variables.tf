@@ -59,6 +59,16 @@ variable "vm_vcpu" {
   default     = 2
 }
 # VMs network
+variable "vm_network_bridge" {
+  description = "vm network bridge name"
+  type        = string
+  default     = "vmbr0"
+}
+variable "vm_network_bridge_model" {
+  description = "vm network bridge model"
+  type        = string
+  default     = "virtio"
+}
 variable "vm_host_number" {
   description = "The host number VMs in CIDR"
   type        = number

@@ -3,10 +3,9 @@
   hosts: all
   become: true
   become_user: root
-  # serial: "50%"
   gather_facts: False
   tasks:
-    - name: cloud-init status Check
+    - name: Cloud-init status Check
       command: cloud-init status --wait
       changed_when: false
 
@@ -25,7 +24,7 @@
         update_cache: yes
         cache_valid_time: 86400 #One day
 
-    - name: install bc sudo apt install bc -y
+    - name: Install bc sudo apt install bc -y
       ansible.builtin.apt:
         name:
           - bc
@@ -42,7 +41,7 @@
         replace: '#\1\2\3swap\4'
         backup: yes
 
-    - name: transfer sysctl script
+    - name: Transfer sysctl script
       ansible.builtin.copy:
         src: scripts/sysctl_config.sh
         dest: /tmp/sysctl_config.sh
@@ -62,7 +61,7 @@
         test_command: 'echo Done!'
       register: reboot_result
 
-    - name: Wait 300 seconds, Checking after 60 seconds
+    - name: Wait 300 seconds for connection, Checking after 60 seconds
       ansible.builtin.wait_for_connection:
         delay: 60
         timeout: 300

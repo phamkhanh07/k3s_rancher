@@ -13,6 +13,8 @@ module "k3s_cluster" {
   vm_memory                  = var.k3s_vm_memory
   vm_cpu_type                = var.k3s_vm_cpu_type
   vm_vcpu                    = var.k3s_vm_vcpu
+  vm_network_bridge          = var.vm_network_bridge
+  vm_network_bridge_model    = var.vm_network_bridge_model
   vm_host_number             = var.k3s_network_cidr_host_number
   vm_network_cidr            = var.k3s_network_cidr
   vm_nameserver              = var.vm_nameserver
@@ -22,7 +24,6 @@ module "k3s_cluster" {
   vm_data_disk_size          = var.k3s_vm_data_disk_size
   vm_data_disk_location      = var.k3s_vm_data_disk_location
   vm_tags                    = var.k3s_tags
-
 }
 
 module "k8s_master" {
@@ -41,6 +42,8 @@ module "k8s_master" {
   vm_cpu_type                = var.k8s_master_vm_cpu_type
   vm_vcpu                    = var.k8s_master_vm_vcpu
   vm_host_number             = var.k8s_master_network_cidr_host_number
+  vm_network_bridge          = var.vm_network_bridge
+  vm_network_bridge_model    = var.vm_network_bridge_model
   vm_network_cidr            = var.k8s_master_network_cidr
   vm_nameserver              = var.vm_nameserver
   vm_cloudinit_cdrom_storage = var.k8s_master_cloudinit_cdrom_storage
@@ -52,22 +55,24 @@ module "k8s_master" {
 }
 
 module "k8s_worker" {
-  source             = "./modules/proxmox_vm"
-  pm_target_node     = var.k8s_worker_target_node
-  cluster_name       = var.k8s_worker_cluster_name
-  cluster_node_count = var.k8s_worker_cluster_node_count
-  vm_template_name   = var.k8s_worker_vm_template_name
-  vm_os_type         = var.k8s_worker_vm_os_type
-  vm_bootdisk        = var.k8s_worker_vm_bootdisk
-  vm_user            = var.k8s_worker_vm_user
-  vm_user_password   = var.k8s_worker_user_password
-  vm_user_sshkey     = var.k8s_worker_user_sshkey
-  vm_memory          = var.k8s_worker_vm_memory
-  vm_cpu_type        = var.k8s_worker_vm_cpu_type
-  vm_vcpu            = var.k8s_worker_vm_vcpu
-  vm_host_number     = var.k8s_worker_network_cidr_host_number
-  vm_network_cidr    = var.k8s_worker_network_cidr
-  vm_nameserver      = var.vm_nameserver
+  source                     = "./modules/proxmox_vm"
+  pm_target_node             = var.k8s_worker_target_node
+  cluster_name               = var.k8s_worker_cluster_name
+  cluster_node_count         = var.k8s_worker_cluster_node_count
+  vm_template_name           = var.k8s_worker_vm_template_name
+  vm_os_type                 = var.k8s_worker_vm_os_type
+  vm_bootdisk                = var.k8s_worker_vm_bootdisk
+  vm_user                    = var.k8s_worker_vm_user
+  vm_user_password           = var.k8s_worker_user_password
+  vm_user_sshkey             = var.k8s_worker_user_sshkey
+  vm_memory                  = var.k8s_worker_vm_memory
+  vm_cpu_type                = var.k8s_worker_vm_cpu_type
+  vm_vcpu                    = var.k8s_worker_vm_vcpu
+  vm_network_bridge          = var.vm_network_bridge
+  vm_network_bridge_model    = var.vm_network_bridge_model
+  vm_host_number             = var.k8s_worker_network_cidr_host_number
+  vm_network_cidr            = var.k8s_worker_network_cidr
+  vm_nameserver              = var.vm_nameserver
   vm_cloudinit_cdrom_storage = var.k8s_worker_cloudinit_cdrom_storage
   vm_os_disk_size            = var.k8s_worker_vm_os_disk_size
   vm_os_disk_location        = var.k8s_worker_vm_os_disk_location

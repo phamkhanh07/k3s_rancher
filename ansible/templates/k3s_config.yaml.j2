@@ -1,10 +1,10 @@
 # K3s configuration file
 write-kubeconfig-mode: "0644"
-server: "k3s.homelab.local"
+server: "{{ CLUSTER_DOMAIN }}"
 tls-san:
   - "{{ K3s_SERVER_IP }}"
 cluster-domain:
-  - "k3s.homelab.local"
+  - "{{ CLUSTER_DOMAIN }}"
 node-label:
   - "name=k3s"
 debug: true
