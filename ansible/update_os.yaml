@@ -49,9 +49,13 @@
 
     - name: Run sysctl script
       ansible.builtin.shell:
-        cmd: bash sysctl_config.sh
+        cmd: sh sysctl_config.sh
         chdir: /tmp
-        
+
+    - name: Set timezone for add host
+      ansible.builtin.timezone:
+        name: Asia/Ho_Chi_Minh
+
     - name: Reboot hosts
       ansible.builtin.reboot:
         msg: 'Reboot host for complete update in 30s'

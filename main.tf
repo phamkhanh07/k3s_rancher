@@ -148,3 +148,10 @@ resource "null_resource" "ansible_install_k3s" {
     command     = "ansible-playbook -i inventory.yaml k3s_install.yaml -v"
   }
 }
+resource "null_resource" "ansible_install_docker" {
+  depends_on = [null_resource.ansible_update_os]
+  provisioner "local-exec" {
+    working_dir = "${path.cwd}/ansible"
+    command     = "ansible-playbook -i inventory.yaml install_docker.yaml -v"   
+  }
+}
