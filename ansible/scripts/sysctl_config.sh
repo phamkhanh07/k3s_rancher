@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Check if bc command is available
-if ! command -v bc &>/dev/null; then
-    echo "This script requires GNU bc. Install it with: sudo apt install bc -y"
-    exit 1
-fi
-
 # Backup sysctl.conf
 cp /etc/sysctl.conf /etc/sysctl.conf.bk
 
